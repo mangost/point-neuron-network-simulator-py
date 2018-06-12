@@ -1,7 +1,7 @@
 #! python
 #! -*- coding:UTF8 -*-
 
-# test_lab.py
+# server_demo.py
 # A demo to use lab_neu on the center machine
 
 from lab_neu import task_generator, lab

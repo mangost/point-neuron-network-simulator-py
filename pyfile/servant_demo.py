@@ -1,7 +1,7 @@
 #! python
 #! -*- coding:UTF8 -*-
 
-# test_servant.py
+# servant_demo.py
 # A demo for using class Servant on the remote servant machines
 
 from servant import Servant
