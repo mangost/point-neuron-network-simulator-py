@@ -76,8 +76,7 @@ import socket
 import json
 import time
 
-from logger import logger
-
+import logger as log
 def time_cost(pm):
     T = pm['t']
     n = pm['nE'] + pm['nI']
@@ -173,8 +172,8 @@ class task_generator:
                             n[target] = one
                             pms.append(n)
                 else:
-                    pms.append(pm)
-                
+                    pass
+                    #pms.append(pm)      # FIXED
         self.pms = pms
 
     def add_some(self, pms):
@@ -239,16 +238,18 @@ class lab:
 
 
     s = socket.socket()
+    logger = None
     
     def __del__(self):
         self.s.close()
 
-    def __init__(self,tasks,hostname,port,waiting_num = 2,servants = [],gen_cmd = 'rm v'):
+    def __init__(self,tasks,hostname,port,waiting_num = 2,servants = [],gen_cmd = 'rm v',log= log.logger):
         self.tasks = tasks
         self.waiting_num = waiting_num
         self.servants = servants
         self.s.bind((hostname,port))
         self.gen_cmd = gen_cmd
+        self.logger = log
 
     def add_tasks(self, tasks):
         self.tasks += tasks
@@ -257,7 +258,7 @@ class lab:
     def add_servant(self, speed = None, status = 'unknown', task_assigned = []):
         sid =len(self.servants)
         self.servants.append(servant(sid, status,speed, task_assigned, time.time()))
-        logger('Event',sid,'add_servant()','')
+        self.logger('Event',sid,'add_servant()','')
         return sid
    
     def find_servant(self,sid):
@@ -283,7 +284,7 @@ class lab:
                 sid = None
             else:
                 sid = jmsg['sid']
-            logger('Event',sid,'start()','get connection')
+            self.logger('Event',sid,'start()','get connection')
             {
                 'hello': self.hello,
                 'bye'  : self.bye,
@@ -317,7 +318,7 @@ class lab:
 
     def error(self,c,jmsg,sid):
         raise ValueError # DUBUG
-        logger("Error", sid, "lab.error()", jmsg)
+        self.logger("Error", sid, "lab.error()", jmsg)
 
     def report(self,c,jmsg,sid):
         self.find_servant(sid).status = jmsg['status']
@@ -330,7 +331,7 @@ class lab:
         if 'time' in jmsg: 
             found[0].time = jmsg['time']
         self.tasks = found + tasks
-        logger("Event", sid, "process()","task (tid = %d) change status to %s" %
+        self.logger("Event", sid, "process()","task (tid = %d) change status to %s" %
                 (jmsg['tid'],jmsg['status']))
 
 
@@ -344,16 +345,18 @@ class lab:
         c.send("OK")  # Note: no json.loads
 
         # FIXME  sometimes json.loads can't decode rc, possibly cuz too small buffer size
-        print data_size
-        print (int(data_size/1024)+1)*1024
+        self.logger("DEBUG",sid,"pull_request","data_size = %d"%data_size)
+        self.logger("DEBUG",sid,"pull_request","buffer_size= %d"%((int(data_size/1024)+1)*1024))
+        
         rc = c.recv(data_size)
-        print len(rc)
-        print rc[-50:]
+        self.logger("DEBUG",sid,"pull_request","len(reviced_msg)= %d"%len(rc))
+        self.logger("DEBUG",sid,"pull_request","reviced_msg[-50:]= %s"%rc[-50:])
+
         assert len(rc) > 1
         try:
             data = json.loads(rc)
         except ValueError as msg:
-            logger('Error',sid,'pull_request()','json.load() failed, with error'+str(msg))
+            self.logger('Error',sid,'pull_request()','json.load() failed, with error'+str(msg))
         data = []
         for each in self.tasks:
             if each.tid == tid:
@@ -383,7 +386,7 @@ class lab:
             self.ctrl_servant(c,sid,'sleep')
         else:
             self.assign(c,sid,to_assign[0:num])
-            logger('Event',sid,'assign_auto()','tasks to be assigned: %s' % str([x.tid for x in to_assign[0:num]]))
+            self.logger('Event',sid,'assign_auto()','tasks to be assigned: %s' % str([x.tid for x in to_assign[0:num]]))
             return
 
 

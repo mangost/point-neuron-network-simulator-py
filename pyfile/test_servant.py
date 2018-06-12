@@ -6,7 +6,7 @@
 
 from servant import Servant
 
-PORT = 12345        # the same as what the lab_neu has opened
+PORT = 22222        # the same as what the lab_neu has opened
 HOST = "127.0.0.1"  # the hostname of the machine running lab_neu
 ADDR = (HOST,PORT)
 
