@@ -116,3 +116,5 @@ class task:
 #    finished
 #    failed
 ```
+
+Thanks to ['point neuron simulation'](https://github.com/mangost/point-neuron-network-simulator) from which I copied the network files.
