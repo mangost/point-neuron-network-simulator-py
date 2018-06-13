@@ -9,7 +9,7 @@ import array     # to read binary file - vlotage data
 
 def parameters():
     pm = {
-            'prog_path'   :['../bin/gen_neu'],
+            'prog_path'   :[],  # init later
             'neuron-model':'HH-PT-GH',
             'simulation-method' :'SSC',
             'net'         :'-',
@@ -37,6 +37,7 @@ def parameters():
             'volt-path':'',
             'isi-path':'',
             'ras-path':'',
+            'alpha-coefficient':0.0,
 
 
 
@@ -64,6 +65,13 @@ def parameters():
             #'ps_mV'  :0,
             #'psi_mV' :0
         }
+
+    if os.name == 'nt': # it is on windows
+        pm['prog_path'] =   [ '..\\bin\\gen_neu.exe','gen_neu.exe',     # for Windows
+                            '..\\gen_neu.exe','.\\bin\\gen_neu.exe']
+    else:
+        pm['prog_path'] =   ['../bin/gen_neu','gen_neu',
+                            '../gen_neu','./bin/gen_neu']
     return pm
 
 
@@ -102,7 +110,7 @@ def gen_neu(pm, gen_cmd = 'rm v', data_folder = "./data/", network_folder = "./n
     if modes['cmd']:
         print "The cmd_str that is going to (in fact won't) be called is: "
         print cmd_str
-        return 0
+        return []
 
     if modes['read']:
         # We have get and checked the filenames in 'add_exec_and_data_path'
@@ -261,6 +269,12 @@ def get_cmd_str(pm,modes):
 
 def add_exec_and_data_path(pm, cmd_str, exec_path,data_folder,modes):
     cmd_str = exec_path + ' '+cmd_str
+    if not os.path.exists(data_folder):
+        try:
+            os.mkdir(data_folder)
+        except:
+            dbp("Warning: data_folder does not exist and failed to create. Use the current folder instead" + data_folder)
+            data_folder = "./"
 
     if not os.path.isdir(data_folder) or not os.access(data_folder,os.W_OK):
         dbp("Diractory does not exist to save data files: "+data_folder)
@@ -287,7 +301,7 @@ def add_exec_and_data_path(pm, cmd_str, exec_path,data_folder,modes):
     return cmd_str, filenames
 
 def read_data_from_file(filenames,pm):
-    print(filenames)
+    #print(filenames)
     for each in filenames:
         if not os.access(each[1],os.R_OK):
             dbp("Error, cannot read data files: "+each[1])
