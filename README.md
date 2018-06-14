@@ -181,7 +181,11 @@ This part is just for my hw project.
 There are some programming skills that have been applied in this project.
 
 ### 本项目的背景：
-计算神经学中常利用各种模型模拟人的神经网络。有时我们会尝试各种模型和参数，希望能解释某一现象或着预测可能会发生的现象。已有几个不错的模拟器，其中包括['point neuron simulation'](https://github.com/mangost/point-neuron-network-simulator)。但该模拟器使用C++编写，不是很便于使用。这个项目包括一个Python借口，用户可以在交互式环境中直接编辑各项参数，无需将其保存成参数文件，即可进行模拟；同时也能直接得到模拟结果。此外，为了方便大量的模拟，这个项目包括一个任务生产器，能抽象地生成大批任务（比如模型为A，B和C，参数为pr = 0,0.01,...,0.99，pr>=0.4只需模拟100ms,但其他的要模拟1000ms，C需要额外参数arg=...，本项目能轻松高效地生成这样的复杂任务，只需简单的几行代码）。最后，此项目利用socket和消息驱动，实现了多终端、多线程模拟（Python的多线程无法真正利用多线程的计算资源，本项目可以通过在一个计算机上的多个端口运行来利用计算机的多线程资源）。
+计算神经学中常利用各种模型模拟人的神经网络。有时我们会尝试各种模型和参数，希望能解释某一现象或着预测可能会发生的现象。已有几个不错的模拟器，其中包括['point neuron simulation'](https://github.com/mangost/point-neuron-network-simulator)。
+
+但该模拟器使用C++编写，不是很便于使用。这个项目包括一个Python借口，用户可以在交互式环境中直接编辑各项参数，无需将其保存成参数文件，即可进行模拟；同时也能直接得到模拟结果。
+
+此外，为了方便大量的模拟，这个项目包括一个任务生产器，能抽象地生成大批任务（比如模型为A，B和C，参数为pr = 0,0.01,...,0.99，pr>=0.4只需模拟100ms,但其他的要模拟1000ms，C需要额外参数arg=...，本项目能轻松高效地生成这样的复杂任务，只需简单的几行代码）。最后，此项目利用socket和消息驱动，实现了多终端、多线程模拟（Python的多线程无法真正利用多线程的计算资源，本项目可以通过在一个计算机上的多个端口运行来利用计算机的多线程资源）。
 
 ### 模块化，事件驱动编程： 
 
@@ -190,7 +194,7 @@ There are some programming skills that have been applied in this project.
 相关代码：
 
 ```
-def lab():									# 中心机程序
+def lab():		# 中心机程序
     def start(self):
         self.s.listen(5)
         while not self.all_finished():
@@ -203,7 +207,7 @@ def lab():									# 中心机程序
                 sid = jmsg['sid']
             self.logger('Event',sid,'start()','get connection')
 
-											# 此处对不同消息进行不同的处理，对不同的操作进行模块化
+			# 此处对不同消息进行不同的处理，对不同的操作进行模块化
 
             {
                 'hello': self.hello,
