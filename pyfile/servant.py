@@ -165,7 +165,7 @@ class Servant:
 
     def pull(self, task):
         jdata = json.dumps(task['data'])
-        print len(jdata)
+        # print len(jdata)  # FIXME in linux, there often be bug in reciving data on the server
         s = self.connect()
         s.send(json.dumps({'title':'pull-request','sid':self.sid,
                            'tid':task['tid'], 'data-size':len(jdata)})) 

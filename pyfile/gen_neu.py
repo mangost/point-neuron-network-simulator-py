@@ -129,6 +129,7 @@ def gen_neu(pm, gen_cmd = 'rm v', data_folder = "./data/", network_folder = "./n
 
     # mode nameX means the user require filenames only
     if modes['nameX']:
+        modes['rm'] = False
         return filenames
 
     data = read_data_from_file(filenames,pm2)
