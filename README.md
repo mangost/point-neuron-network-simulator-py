@@ -1,6 +1,6 @@
 # Python interface to the 'point neuron simulation'
 
-Author: Yongwang SHI <managosteen@sjtu.edu.cn>
+Author: Yongwang SHI <managosteen at sjtu.edu.cn>
 
 This project is the homework project of CS902, lectured by Prof. Chaojun LU
 
@@ -254,6 +254,8 @@ gen_neu 示意(gen_neu_demo.py)：
 
 lab_neu 示意（server_demo.py和servant_demo.py配合运行）：
 ![](https://github.com/mangost/point-neuron-network-simulator-py/blob/master/doc/result.png)
+左：server_demo.py,右：servant_demopy
 
 
+## Credits:
 Thanks to ['point neuron simulation'](https://github.com/mangost/point-neuron-network-simulator) from which I copied the network files.
