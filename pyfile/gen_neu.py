@@ -309,7 +309,7 @@ def read_data_from_file(filenames,pm):
             if each[0] == 'volt':
                 # rows = int(pm['t']/pm['stv'])  # CHECK +1 ?
                 num_neuron = pm['nE'] + pm['nI']
-                data = array.array('B')
+                data = array.array('d')
                 with open(each[1],'rb') as f:
                     while True:
                         try:
@@ -320,7 +320,10 @@ def read_data_from_file(filenames,pm):
                 data_list = list(data)
                 data_mat= [data_list[s:s+num_neuron] for s in xrange(0, len(data_list), num_neuron)]
 
-                each.append(data_mat)
+                # transpose data_mat into data_mat_t
+                data_mat_t = [[arow[i] for arow in data_mat] for i in range(len(data_mat[0]))]
+
+                each.append(data_mat_t)
             else:
                 with open(each[1],'r') as f:
                     each.append(str_to_matrix(f.read().strip(),'\n','\t'))
