@@ -39,7 +39,7 @@ Demos:
 
 ## Usage
 
-about gen_neu:
+### about gen_neu:
 ```
 # Get defalut parameters
 pm = parameters()
@@ -95,7 +95,7 @@ plt.plot(result[0][2][0])  # show the voltage trace of the first neruron
 plt.show()
 ```
 
-about lab_neu:
+### about lab_neu:
 ```
 from lab_neu import task_generator, lab
 from gen_neu import parameters
@@ -150,7 +150,7 @@ l = lab(tasks,HOST,PORT,gen_cmd = 'v rm')
 l.start()
 ```
 
-about servant.py:
+### about servant.py:
 ```
 from servant import Servant
 
@@ -247,10 +247,10 @@ class task:
 参见 usage，或者pyfile\*_demo.py
 
 gen_neu 示意(gen_neu_demo.py)：
-[!](doc\simu.png)
+![](doc\simu.png)
 
 lab_neu 示意（server_demo.py和servant_demo.py配合运行）：
-[!](doc\result.png)
+![](doc\result.png)
 
 
 Thanks to ['point neuron simulation'](https://github.com/mangost/point-neuron-network-simulator) from which I copied the network files.
