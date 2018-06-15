@@ -243,11 +243,11 @@ class lab:
     def __del__(self):
         self.s.close()
 
-    def __init__(self,tasks,hostname,port,waiting_num = 2,servants = [],gen_cmd = 'rm v',log= log.logger):
+    def __init__(self,tasks,addr,waiting_num = 2,servants = [],gen_cmd = 'rm v',log= log.logger):
         self.tasks = tasks
         self.waiting_num = waiting_num
         self.servants = servants
-        self.s.bind((hostname,port))
+        self.s.bind(addr)
         self.gen_cmd = gen_cmd
         self.logger = log
 
@@ -386,7 +386,7 @@ class lab:
             self.ctrl_servant(c,sid,'sleep')
         else:
             num = min([num, len(to_assign)])
-            print "#task to be assigned %d" % num
+            # print "#task to be assigned %d" % num
             self.assign(c,sid,to_assign[0:num])
             self.logger('Event',sid,'assign_auto()','tasks to be assigned: %s' % str([x.tid for x in to_assign[0:num]]))
             return

@@ -44,7 +44,7 @@ print([(a.tid, a.pm['neuron-model'],a.pm['pr']) for a in tasks])
 # Once you get all the tasks, you can run the 'lab'
 HOST = "127.0.0.1"
 PORT = 22222        # Servant machine will connect at this HOST and PORT
-l = lab(tasks,HOST,PORT,gen_cmd = 'v rm')
+l = lab(tasks,(HOST,PORT),gen_cmd = 'v rm') # not to forget the key 'gen_cmd' !!!
         # gen_cmd is the modes of the interface
         # by default, it's v rm
         # v:          verbose process
