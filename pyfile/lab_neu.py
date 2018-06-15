@@ -353,11 +353,11 @@ class lab:
         self.logger("DEBUG",sid,"pull_request","reviced_msg[-50:]= %s"%rc[-50:])
 
         assert len(rc) > 1
+        data = []  # FIXED 2018/06/15
         try:
             data = json.loads(rc)
         except ValueError as msg:
             self.logger('Error',sid,'pull_request()','json.load() failed, with error'+str(msg))
-        data = []
         for each in self.tasks:
             if each.tid == tid:
                 each.data = data
@@ -385,6 +385,8 @@ class lab:
         if to_assign == []:
             self.ctrl_servant(c,sid,'sleep')
         else:
+            num = min([num, len(to_assign)])
+            print "#task to be assigned %d" % num
             self.assign(c,sid,to_assign[0:num])
             self.logger('Event',sid,'assign_auto()','tasks to be assigned: %s' % str([x.tid for x in to_assign[0:num]]))
             return
